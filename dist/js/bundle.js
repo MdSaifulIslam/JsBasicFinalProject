@@ -3846,19 +3846,30 @@ eval("var g;\n\n// This works in non-strict mode\ng = (function() {\n\treturn th
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nvar _test = __webpack_require__(/*! ./test */ \"./src/js/test.js\");\n\nvar _test2 = _interopRequireDefault(_test);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconsole.log(\"test jgf     \" + _test2.default + \"     hey imported from test\");\n\n//# sourceURL=webpack:///./src/js/index.js?");
+eval("\n\nvar _Search = __webpack_require__(/*! ./models/Search */ \"./src/js/models/Search.js\");\n\nvar _Search2 = _interopRequireDefault(_Search);\n\nvar _searchView = __webpack_require__(/*! ./views/searchView */ \"./src/js/views/searchView.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nconsole.log(\"Imported \" + (0, _searchView.add)(2, 3) + \" \" + (0, _searchView.mul)(_searchView.ID, 4) + \" \" + _Search2.default);\n\n//# sourceURL=webpack:///./src/js/index.js?");
 
 /***/ }),
 
-/***/ "./src/js/test.js":
-/*!************************!*\
-  !*** ./src/js/test.js ***!
-  \************************/
+/***/ "./src/js/models/Search.js":
+/*!*********************************!*\
+  !*** ./src/js/models/Search.js ***!
+  \*********************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nconsole.log('hi um imported and test again');\nexports.default = 23344343;\n\n//# sourceURL=webpack:///./src/js/test.js?");
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nexports.default = 'Hey I am here';\n\n//# sourceURL=webpack:///./src/js/models/Search.js?");
+
+/***/ }),
+
+/***/ "./src/js/views/searchView.js":
+/*!************************************!*\
+  !*** ./src/js/views/searchView.js ***!
+  \************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("throw new Error(\"Module build failed (from ./node_modules/babel-loader/lib/index.js):\\nTypeError: D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\src\\\\js\\\\views\\\\searchView.js: Cannot read property 'bindings' of null\\n    at Scope.moveBindingTo (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\scope\\\\index.js:933:13)\\n    at convertBlockScopedToVar (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\babel-plugin-transform-es2015-block-scoping\\\\lib\\\\index.js:139:13)\\n    at PluginPass.VariableDeclaration (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\babel-plugin-transform-es2015-block-scoping\\\\lib\\\\index.js:26:9)\\n    at newFn (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\visitors.js:179:21)\\n    at NodePath._call (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\path\\\\context.js:55:20)\\n    at NodePath.call (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\path\\\\context.js:42:17)\\n    at NodePath.visit (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\path\\\\context.js:90:31)\\n    at TraversalContext.visitQueue (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\context.js:112:16)\\n    at TraversalContext.visitSingle (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\context.js:84:19)\\n    at TraversalContext.visit (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\context.js:140:19)\\n    at Function.traverse.node (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\index.js:84:17)\\n    at NodePath.visit (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\path\\\\context.js:97:18)\\n    at TraversalContext.visitQueue (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\context.js:112:16)\\n    at TraversalContext.visitMultiple (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\context.js:79:17)\\n    at TraversalContext.visit (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\context.js:138:19)\\n    at Function.traverse.node (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\index.js:84:17)\\n    at NodePath.visit (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\path\\\\context.js:97:18)\\n    at TraversalContext.visitQueue (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\context.js:112:16)\\n    at TraversalContext.visitSingle (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\context.js:84:19)\\n    at TraversalContext.visit (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\context.js:140:19)\\n    at Function.traverse.node (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\index.js:84:17)\\n    at traverse (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\traverse\\\\lib\\\\index.js:66:12)\\n    at transformFile (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\core\\\\lib\\\\transformation\\\\index.js:107:29)\\n    at transformFile.next (<anonymous>)\\n    at run (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\core\\\\lib\\\\transformation\\\\index.js:35:12)\\n    at run.next (<anonymous>)\\n    at Function.transform (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\@babel\\\\core\\\\lib\\\\transform.js:27:41)\\n    at transform.next (<anonymous>)\\n    at step (D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\gensync\\\\index.js:254:32)\\n    at D:\\\\[000DEVELOPMENT\\\\JsBasicFinalProject\\\\node_modules\\\\gensync\\\\index.js:266:13\");\n\n//# sourceURL=webpack:///./src/js/views/searchView.js?");
 
 /***/ }),
 
