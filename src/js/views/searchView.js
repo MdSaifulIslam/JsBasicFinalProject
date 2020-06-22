@@ -1,4 +1,3 @@
-
 import { elements } from './base';
 
 export const getInput = () => elements.searchInput.value;
@@ -10,6 +9,14 @@ export const clearReasults = () => {
     elements.searchResPages.innerHTML = '';
 };
 
+export const highlightedSelected = id => {
+    const resultArr = Array.from(document.querySelectorAll('.results__link'));
+    resultArr.forEach(el => {
+       el.classList.remove('results__link--active');
+    })
+    document.querySelector(`.results__link[href*="${id}"]`).classList.add('results__link--active');
+}
+
 const reduce = title => {
     title = title.substring(0, 20);
     return title + '...';
@@ -18,13 +25,13 @@ const reduce = title => {
 const renderNews = news => {
     const markup = `
     <li>
-                    <a class="results__link results__link--active" href="${news.url}">
+                    <a class="results__link results__link--active" href="#${news.idDrink}">
                         <figure class="results__fig">
-                            <img src="${news.urlToImage}" alt="Test">
+                            <img src="${news.strDrinkThumb}" alt="Test">
                         </figure>
                         <div class="results__data">
-                            <h4 class="results__name">${reduce(news.title)}.</h4>
-                            <p class="results__author">${news.author}</p>
+                            <h4 class="results__name">${reduce(news.strDrink)}.</h4>
+                            <p class="results__author">${news.strGlass}</p>
                         </div>
                     </a>
                 </li>

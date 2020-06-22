@@ -1,6 +1,12 @@
 import Search from './models/Search';
-import { elements, renderLoader,clearLoader } from './views/base';
+import Recipe from './models/Recipe';
+import List from './models/List';
+import Likes from './models/Likes';
+import { elements, renderLoader, clearLoader } from './views/base';
 import * as searchView from './views/searchView';
+import * as recipeView from './views/recipeView';
+import * as listView from './views/listView';
+import * as likesView from './views/likesView';
 /**Global state  of the app
  * - search object
  * - current recipe state
@@ -11,11 +17,14 @@ import * as searchView from './views/searchView';
 
 const state = {};
 
+
+/**
+ * search controller
+ */
+
 const controlSearch = async () => {
     // Get query from view
     const query = searchView.getInput();
-    console.log(query);
-    
 
     if (query) {
         // New Search object and add to state
@@ -26,11 +35,14 @@ const controlSearch = async () => {
         renderLoader(elements.searchRes);
 
         // search for data
-        await state.search.getResults();
-        
-        clearLoader();
-        
-        searchView.renderResults(state.search.result);
+        try {
+            await state.search.getResults();
+            clearLoader();
+            searchView.renderResults(state.search.result);
+        } catch (error) {
+            alert(error);
+            clearLoader();
+        }
     }
 }
 
@@ -39,59 +51,129 @@ elements.searchForm.addEventListener('submit', e => {
     controlSearch();
 });
 
-elements.searchResPages.addEventListener('click', e=>{
+elements.searchResPages.addEventListener('click', e => {
     const btn = e.target.closest('.btn-inline');
-    if(btn){
-        const gotoPage =parseInt(btn.dataset.goto,10);
+    if (btn) {
+        const gotoPage = parseInt(btn.dataset.goto, 10);
         searchView.clearReasults();
         searchView.renderResults(state.search.result, gotoPage);
     }
 });
 
+/**
+ * recipe controller
+ */
+const controlRecipe = async () => {
+    const id = window.location.hash.replace('#', '');
+    if (id) {
+        //prepare uI for change
+        recipeView.clearRecipe();
+        renderLoader(elements.recipe);
+        if(state.search) searchView.highlightedSelected(id);
+        //create new recipe object
+        state.recipe = new Recipe(id);
+        try {
+            //get recipe data
+            await state.recipe.getRecipe();
+            state.recipe.parseIngredients();
+            state.recipe.calcTime();
+            state.recipe.calcServings();
+            clearLoader();
+            recipeView.renderRecipe(
+                state.recipe,
+                state.likes.isLiked(id)
+                );
+        } catch (error) {
+            alert(error);
+        }
+
+    }
+
+};
 
 
-
+['hashchange', 'load'].forEach(event => window.addEventListener(event, controlRecipe));
 
 
 /**
- *  this is the api test code
+ * List controller
  */
+const controlList = () => {
+    if(!state.list)
+        state.list = new List();
+        state.recipe.ingredients.forEach(el =>{
+            const item = state.list.addItem(el.count, el.unit, el.ing);
+            listView.renderItem(item);
+        });
+}
 
-//api key = dc357c9d5c9dbe82ffbae8dc8dce5795f013b313;
-
-//api key = 6aa856acda0b5714153233e8aebeb2e0;
-
-//import axios from 'axios';
-// async function getResults(){
-//     const url = `http://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=3bf04716a3b343ee8c75744adb5f7e45`;
-//     //const url = `https://www.thecocktaildb.com/api/json/v1/1/search.php?f=a`;
-//     //const url = `https://order-pizza-api.herokuapp.com/api/swagger.json`;
-//     const proxy = 'https://cors-anywhere.herokuapp.com/';
-//     const key = '3bf04716a3b343ee8c75744adb5f7e45';
-//     console.log('hitting');
-
-//     try {
-//         //const res = await axios(`${proxy}https://api.edamam.com/search?q=chicken&app_id=2cf8fd6b&app_key=${key}&from=0&to=3&calories=591-722&health=alcohol-free`);
-//         const res = await axios(`${url}`);
-//         console.log(res.data.articles[1].content);
-
-//     } catch (error) {
-//         alert(error);
-//     }
-// }
-
-// getResults();
-
-/*
-Application ID
-2cf8fd6b
-Application Keys
-3d8686150775052ff45845d142cd948e
-//const url = `http://newsapi.org/v2/top-headlines?country=${this.country}&category=${this.category}&apiKey=3bf04716a3b343ee8c75744adb5f7e45`;
-
-
-*/
-//"https://api.edamam.com/search?q=chicken&app_id=${YOUR_APP_ID}&app_key=${YOUR_APP_KEY}&from=0&to=3&calories=591-722&health=alcohol-free"
 /**
- *  this is the api test code
+ * Like controller
  */
+
+const controlLike = () =>{
+    if(!state.likes) state.likes = new Likes();
+    const currentID = state.recipe.id;
+    if(!state.likes.isLiked(currentID)){
+        const newLike = state.likes.addLike(
+            currentID,
+            state.recipe.title,
+            state.recipe.author,
+            state.recipe.img
+        );  
+
+        likesView.toggleLiked(true);
+
+        likesView.renderLikes(newLike);
+
+    }else{
+        state.likes.deleteLike(currentID);
+
+        likesView.toggleLiked(false);
+        likesView.deleteLike(currentID);
+
+    }
+    likesView.toggleMenu(state.likes.getNunLikes());
+}
+
+
+
+elements.shopping.addEventListener('click', e=>{
+    const id = e.target.closest('.shopping__item').dataset.itemid;
+    if(e.target.matches('.shopping__delete, .shopping__delete *')){
+        state.list.deleteItem(id);
+        listView.deleteItem(id);
+    }else if(e.target.matches('.shopping_count--value')){
+        const val = parseFloat(e.target.value, 10);
+        state.list.updateCount(id, val);
+    }
+    
+});
+
+//Restore liked
+window.addEventListener('load' , () =>{
+    state.likes = new Likes();
+    state.likes.readStorage();
+    likesView.toggleMenu(state.likes.getNunLikes());
+    state.likes.likes.forEach(like => likesView.renderLikes(like));
+});
+
+
+elements.recipe.addEventListener('click', e=> {
+    if(e.target.matches('.btn-decrease, .btn-decrease *')){
+        //decrease buttom clicked
+        if(state.recipe.servings > 1){
+            state.recipe.updateServings('dec');
+            recipeView.updateServingsIngre(state.recipe);
+        }
+    }else if(e.target.matches('.btn-increase, .btn-increase *')){
+        //increase button clicked
+        state.recipe.updateServings('inc');
+        recipeView.updateServingsIngre(state.recipe);
+    }
+    else if(e.target.matches('.recipe_btn--add, .recipe_btn--add *')){
+        controlList();
+    }else if(e.target.matches('.recipe__love, .recipe__love *')){
+        controlLike();
+    }
+});
